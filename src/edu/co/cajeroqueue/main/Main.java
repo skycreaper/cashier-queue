@@ -6,7 +6,7 @@
 package edu.co.cajeroqueue.main;
 
 import UI.Ventana;
-
+import edu.co.cashierqueue.logic.Queue;
 /**
  *
  * @author David Steven Santos Santos
@@ -14,6 +14,9 @@ import UI.Ventana;
  */
 public class Main {
     public static void main(String[] args) {        
-        Ventana v = new Ventana();
+        //Ventana v = new Ventana();
+        Queue q = new Queue();
+        q.initValues();
+        q.printAllStructure();
     }
 }
