@@ -8,7 +8,7 @@ import java.util.Random;
  * @author juancsr, davidssantos
  */
 public class Queue {
-    private Node node;
+    private Node cashierNode;
     private int clients;
     
     public Queue() {
@@ -24,56 +24,89 @@ public class Queue {
         Random rand = new Random();
         int ranCashierReceitps = rand.nextInt(maxCashierReceipts)+1;
         
-        node = new Node(ranCashierReceitps, Node.CASHIER_TYPE); // this is de cashier
-        System.out.println("cashier's dispatch capacity: " + node.getReceipts());
-        for (int i = 0; i < clients; i++) {
+        //cashierNode = new Node(ranCashierReceitps, Node.CASHIER_TYPE); // this is de cashier
+        cashierNode = new Node(3, Node.CASHIER_TYPE); // this is de cashier
+        
+        System.out.println("cashier's dispatch capacity: " + cashierNode.getReceipts());
+        ranClientReceipts = rand.nextInt(maxClientReceipts)+1;
+        Node clientsStruct = new Node(ranClientReceipts, Node.CLIENT_TYPE+"1");
+        cashierNode.setNext(clientsStruct);
+        clientsStruct.setNext(cashierNode);
+        Node newClient;
+        
+        for (int i = 1; i < clients; i++) {
             ranClientReceipts = rand.nextInt(maxClientReceipts)+1;
-            Node clientNode = new Node(ranClientReceipts, Node.CLIENT_TYPE);
-            System.out.println("clientNode receipts: " + clientNode.getReceipts());
-            Node aviable = aviableNode(this.node);
-            aviable.setNext(clientNode);
+            newClient = new Node(ranClientReceipts, Node.CLIENT_TYPE+(i+1));
+            newClient.setNext(cashierNode);
+            clientsStruct = (clientsStruct.getNext() == null) ? clientsStruct : clientsStruct.getNext();
+            clientsStruct.setNext(newClient);
         }
     }
     
     public void executeProcess() {
-        
+        System.err.println("-- Starting process --");
+        dispatchProcess();
+        System.out.println("-- Finished process --");
     }
     
     private void dispatchProcess() {
         printAllStructure();
-        int cltRemainingRecp;
-        while (this.node.getNext() != this.node) {
-            cltRemainingRecp = this.node.getNext().getReceipts();
-            this.node.getNext().setReceipts(cltRemainingRecp - this.node.getReceipts());
-            if (this.node.getNext().getReceipts() < 0) {
-                this.node.setNext(this.node.getNext().getNext());
-            } else {
-                Node aviable = aviableNode(this.node);
+        int customerRecetips;
+        Node lastCustomer, currentCustomer;
+        
+        int cashierReceipts = this.cashierNode.getReceipts();  // available cashier receipts        
+        while (this.cashierNode.getNext() != this.cashierNode) {
+            
+            currentCustomer = this.cashierNode.getNext();
+            customerRecetips = currentCustomer.getReceipts();
+            System.out.println("currentCustomer recepits: "+ currentCustomer.getReceipts());
+            
+            currentCustomer.setReceipts(customerRecetips - cashierReceipts);
+            this.cashierNode.setNext(currentCustomer.getNext());
+            System.out.println("currentCustomer after recepits: "+ currentCustomer.getReceipts());
+            
+            if (currentCustomer.getReceipts() > 0) {
+                lastCustomer = getLastNode(this.cashierNode);
+                lastCustomer.setNext(currentCustomer);
+                currentCustomer.setNext(this.cashierNode);
             }
+            System.out.print("structure: ");
             printAllStructure();
         }
+        System.out.println("(Node type: " + this.cashierNode.getType() + 
+                    " Node receipts: " + this.cashierNode.getReceipts()+"),");
     }
     
-    private Node aviableNode(Node node) {
-        if (node.getNext() == null) {
-            System.out.println("Found empty: " + node.getType() + ", " + node.getReceipts());
+    /*
+    Get the last node of the queue
+    @param node: It the node to starts the search
+    */
+    private Node getLastNode(Node node) {
+        if (node.getNext() == this.cashierNode) {
+//            System.out.println("Found empty: " + node.getType());
             return node;
         }
-        return aviableNode(node.getNext());
+        return getLastNode(node.getNext());
     }
     
     private void generateClients() {
         Random rand = new Random();
-        this.clients = rand.nextInt(5)+1;
+        //this.clients = rand.nextInt(5)+1;
+        this.clients = 1;
     }
     
     public void printAllStructure() {
-        Node _node = this.node;
+        Node node = this.cashierNode;
         System.out.print("[");
-        while (_node != null) {
-            System.out.print("(Node type: " + _node.getType() + 
-                    " Node receipts: " + _node.getReceipts()+"),");
-            _node = _node.getNext();
+        while (node.getNext() != this.cashierNode) {
+            System.out.print("(Node type: " + node.getType() + 
+                    " Node receipts: " + node.getReceipts()+"),");
+            node = node.getNext();
+//            System.out.println("\nnode?"+node);
+            if (node.getNext() == this.cashierNode) {
+                System.out.print("(Node type: " + node.getType() + 
+                    " Node receipts: " + node.getReceipts()+"),");
+            }
         }
         System.out.println("]");
     }

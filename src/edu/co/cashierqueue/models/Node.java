@@ -5,14 +5,14 @@ package edu.co.cashierqueue.models;
  * @author juancsr
  */
 public class Node extends Client{
-    public static final char CLIENT_TYPE='c';
-    public static final char CASHIER_TYPE = 'C';
+    public static final String CLIENT_TYPE="c";
+    public static final String CASHIER_TYPE = "C";
     
     private Node next;
     private int receipts;
-    private char type;
+    private String type;
 
-    public Node(int receipts, char type) {
+    public Node(int receipts, String type) {
         this.next = null;
         this.receipts = receipts;
         this.type = type;
@@ -34,11 +34,11 @@ public class Node extends Client{
         this.receipts = receipts;
     }
 
-    public char getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(char type) {
+    public void setType(String type) {
         this.type = type;
     }
     

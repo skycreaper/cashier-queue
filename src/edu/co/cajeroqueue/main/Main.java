@@ -18,5 +18,6 @@ public class Main {
         Queue q = new Queue();
         q.initValues();
         q.printAllStructure();
+        q.executeProcess();
     }
 }
