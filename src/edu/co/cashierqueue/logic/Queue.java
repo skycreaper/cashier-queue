@@ -24,8 +24,7 @@ public class Queue {
         Random rand = new Random();
         int ranCashierReceitps = rand.nextInt(maxCashierReceipts)+1;
         
-        //cashierNode = new Node(ranCashierReceitps, Node.CASHIER_TYPE); // this is de cashier
-        cashierNode = new Node(3, Node.CASHIER_TYPE); // this is de cashier
+        cashierNode = new Node(ranCashierReceitps, Node.CASHIER_TYPE); // this is de cashier
         
         System.out.println("cashier's dispatch capacity: " + cashierNode.getReceipts());
         ranClientReceipts = rand.nextInt(maxClientReceipts)+1;
@@ -91,8 +90,8 @@ public class Queue {
     
     private void generateClients() {
         Random rand = new Random();
-        //this.clients = rand.nextInt(5)+1;
-        this.clients = 1;
+        this.clients = rand.nextInt(5)+1;
+        //this.clients = 1;
     }
     
     public void printAllStructure() {
