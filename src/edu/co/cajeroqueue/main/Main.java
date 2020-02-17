@@ -14,10 +14,10 @@ import edu.co.cashierqueue.logic.Queue;
  */
 public class Main {
     public static void main(String[] args) {        
-        //Ventana v = new Ventana();
+//        Ventana v = new Ventana();
         Queue q = new Queue();
         q.initValues();
-        q.printAllStructure();
-        q.executeProcess();
+//        q.printAllStructure();
+//        q.executeProcess();
     }
 }

@@ -1,5 +1,6 @@
 package edu.co.cashierqueue.logic;
 
+import UI.Ventana;
 import edu.co.cashierqueue.models.Node;
 import java.util.Random;
 
@@ -10,6 +11,8 @@ import java.util.Random;
 public class Queue {
     private Node cashierNode;
     private int clients;
+    Ventana v;
+
     
     public Queue() {
         generateClients();
@@ -17,6 +20,7 @@ public class Queue {
     }
     
     public void initValues() {
+        v = new Ventana();
         int ranClientReceipts;
         
         int maxClientReceipts = 14;
@@ -25,7 +29,11 @@ public class Queue {
         int ranCashierReceitps = rand.nextInt(maxCashierReceipts)+1;
         
         cashierNode = new Node(ranCashierReceitps, Node.CASHIER_TYPE); // this is de cashier
-        
+        v.btnStart.addActionListener(new java.awt.event.ActionListener() {      //Metodo implementado provisional para el actionperformed 
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartActionPerformed(evt);
+            }
+        });
         System.out.println("cashier's dispatch capacity: " + cashierNode.getReceipts());
         ranClientReceipts = rand.nextInt(maxClientReceipts)+1;
         Node clientsStruct = new Node(ranClientReceipts, Node.CLIENT_TYPE+"1");
@@ -40,6 +48,10 @@ public class Queue {
             clientsStruct = (clientsStruct.getNext() == null) ? clientsStruct : clientsStruct.getNext();
             clientsStruct.setNext(newClient);
         }
+    }
+    public void btnStartActionPerformed(java.awt.event.ActionEvent evt) {
+        v.lblCashier.setText(cashierNode.CASHIER_TYPE);
+        v.lblClientCounter.setText("CLIENTES: " + clients );
     }
     
     public void executeProcess() {
