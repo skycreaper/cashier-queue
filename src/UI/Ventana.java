@@ -1,28 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package UI;
 
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.List;
-import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import edu.co.cashierqueue.logic.Queue;
 import edu.co.cashierqueue.models.Node;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 /**
  *
- * @author Estudiantes
+ * @author skcreaper
  */
 public class Ventana extends JFrame{
     
@@ -30,17 +24,20 @@ public class Ventana extends JFrame{
     public Color c2 = new Color(104, 109, 224); // Bien morado ligero
     public Color c3 = new Color(223, 249, 251); // Como un gris wn
     public Color c4 = new Color(48, 51, 107);  // Azul grisaceo
+    public Color c5 = new Color(43, 203, 186);  // ?
+    
     public Font font = new Font("Agency FB", Font.BOLD, 34);
     public Font font2 = new Font("Agency FB", Font.BOLD, 20);
     
     public JPanel header = new JPanel();
     public JPanel subHeader = new JPanel();
     public JPanel buttonsPanel = new JPanel();
-    public JPanel clientsPanel = new JPanel();
-    public JPanel footer = new JPanel();
     public JPanel content = new JPanel();
     
     public JButton btnStart = new JButton();
+    public JButton btnIcon = new JButton();
+
+    
     public JLabel lblCashier = new JLabel();
     public JLabel lblClient = new JLabel();
     public JLabel lblClientCounter = new JLabel();
@@ -51,7 +48,7 @@ public class Ventana extends JFrame{
     public HashMap<String, JLabel> nodeLabels;
     
     int screenWidth = 1024;
-    int screenHeight = 720;
+    int screenHeight = 600;
     
     public Ventana() {
         Container c = getContentPane();
@@ -66,7 +63,7 @@ public class Ventana extends JFrame{
         drawButtons();
         
         add(content);                               //Panel para el conenido y sus propiedades respectivas
-        content.setBounds(0, 250, screenWidth, 400);
+        content.setBounds(0, 250, screenWidth, 600);
         content.setBackground(c2);
         
         content.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -77,6 +74,7 @@ public class Ventana extends JFrame{
         
         super.setSize(screenWidth, screenHeight);
         super.setVisible(true);
+        super.setResizable(false);
     }
     
     public void testDraw(Node cashierNode) {
@@ -96,14 +94,14 @@ public class Ventana extends JFrame{
             nodeLabel.setName(_node.getType());
             paintNode(_node.getType(), nodeLabel);
             content.add(nodeLabel);
-            nodeLabel.setBounds(init, content.getHeight()/2, nodeWidth, nodeHeight);
+            nodeLabel.setBounds(init, content.getHeight()/2-200, nodeWidth, nodeHeight);
             
             if (_node.getNext() != cashierNode) {
                 nodeConection = new JLabel();
                 content.add(nodeConection);
                 nodeConection.setText("<-");
                 nodeConection.setFont(font2);
-                nodeConection.setBounds((init+nodeWidth), content.getHeight()/2+13, 40, 20);
+                nodeConection.setBounds((init+nodeWidth), content.getHeight()/2+13-200, 40, 20);
             }
                              
             nodeLabel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -122,16 +120,16 @@ public class Ventana extends JFrame{
                     break;
                 case "c1":
                     nodeLabel.setBackground(Color.yellow);
-                break;
+                    break;
                 case "c2":
                     nodeLabel.setBackground(Color.PINK);
-                break;
+                    break;
                 case "c3":
                     nodeLabel.setBackground(Color.cyan);
-                break;
+                    break;
                 case "c4":
                     nodeLabel.setBackground(Color.magenta);
-                break;
+                    break;
                 default:
                     nodeLabel.setBackground(Color.orange);
                 break;
@@ -158,7 +156,7 @@ public class Ventana extends JFrame{
             paintNode(_node.getType(), nodeLabel);
             
             content.add(nodeLabel);
-            nodeLabel.setBounds(init, content.getHeight()/2, nodeWidth, nodeHeight);
+            nodeLabel.setBounds(init, content.getHeight()/2-200, nodeWidth, nodeHeight);
             
             
             
@@ -167,7 +165,7 @@ public class Ventana extends JFrame{
                 content.add(nodeConection);
                 nodeConection.setText("<-");
                 nodeConection.setFont(font2);
-                nodeConection.setBounds((init+nodeWidth), content.getHeight()/2+13, 40, 20);
+                nodeConection.setBounds((init+nodeWidth), content.getHeight()/2+13-200, 40, 20);
             }
                              
             nodeLabel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -180,18 +178,25 @@ public class Ventana extends JFrame{
     }
     
     private void drawHeader() {
+        
+        add(btnIcon);
+        btnIcon.setBounds(0,0,200,200);
+        Icon icon = new ImageIcon("ud.png");
+        btnIcon.setIcon(icon);
+        
         add(header);                                //Panel para el encabezado y sus propiedades respectivas
         header.setBounds(0, 0, screenWidth, 100);
         header.setBackground(c1);
+        header.setLayout(null);
         
         header.add(lblTitulo);                             //Label del titulo y sus propiedades respectivas
-        lblTitulo.setBounds(420, 50, 1000, 100);
+        lblTitulo.setBounds(300, 10, 1000, 100);
         lblTitulo.setFont(font);
     }
     
     private void drawSubHeader() {
         add(subHeader);                                //Panel para el encabezado y sus propiedades respectivas
-        subHeader.setBounds(0, 100, screenWidth, 50);
+        subHeader.setBounds(0, 100, screenWidth, 100);
         subHeader.setBackground(c1);
         
         subHeader.add(lblAutorD);                             //Label para autor y sus propiedades respectivas
@@ -202,22 +207,21 @@ public class Ventana extends JFrame{
     
     private void drawButtons() {
         add(buttonsPanel);
-        buttonsPanel.setBounds(0, 150, screenWidth, 50);
+        buttonsPanel.setBounds(0, 200, screenWidth, 70);
         buttonsPanel.setBackground(c1);
-        
-        add(clientsPanel);
-        clientsPanel.setBounds(0, 200, screenWidth, 50);
-        clientsPanel.setBackground(c1);
+        buttonsPanel.setLayout(null);
         
         buttonsPanel.add(btnStart);                              //Boton para dar inicio a la ejecucion y sus propiedades respectivas
-        btnStart.setBounds(0, 0, 150, 45);
-        btnStart.setBackground(c4);
+        btnStart.setBounds(screenWidth/2-100, 0, 150, 45);
+        btnStart.setBackground(c5);
         btnStart.setForeground(c3);
         btnStart.setFont(font2);
+        btnStart.setBorder(new RoundedBorder(8));
         btnStart.setText("INICIAR");
         
-        clientsPanel.add(lblClientCounter);                      //Label provisional que muestra la cantidad de clientes que ingresan
-        lblClientCounter.setBounds(1000, 10, 150, 35);
+        buttonsPanel.add(lblClientCounter);                      //Label provisional que muestra la cantidad de clientes que ingresan
+        lblClientCounter.setBounds(700, 10, 150, 35);
         lblClientCounter.setFont(font2);
+        lblClientCounter.setForeground(c3);
     }
 }
