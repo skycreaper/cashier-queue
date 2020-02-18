@@ -11,11 +11,13 @@ public class Node extends Client{
     private Node next;
     private int receipts;
     private String type;
-
-    public Node(int receipts, String type) {
+    private String name;
+    
+    public Node(int receipts, String type, String name) {
         this.next = null;
         this.receipts = receipts;
         this.type = type;
+        this.name = name;
     }
     
     public Node getNext() {
@@ -41,6 +43,12 @@ public class Node extends Client{
     public void setType(String type) {
         this.type = type;
     }
-    
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

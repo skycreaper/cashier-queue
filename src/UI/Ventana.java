@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import edu.co.cashierqueue.logic.Queue;
 import edu.co.cashierqueue.models.Node;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -59,22 +60,16 @@ public class Ventana extends JFrame{
         NodeUI node = new NodeUI();
         
         drawHeader();
-        
         drawSubHeader();
-        
-        
         
         add(lblClient);
         lblClient.setBounds(150, 350, 350, 35);
         lblClient.setFont(font);
         
         
-        
-        
         add(content);                               //Panel para el conenido y sus propiedades respectivas
         content.setBounds(0, 200, screenWidth, 400);
         content.setBackground(c2);
-        //content.add(node);
         
         content.setBorder(BorderFactory.createLineBorder(Color.black));
         
@@ -88,86 +83,49 @@ public class Ventana extends JFrame{
         btnStart.setForeground(c3);
         btnStart.setFont(font2);
         btnStart.setText("INICIAR");
-        //btnStart.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-        
-       
-        
-        //drawsNodes();
         
         setSize(screenWidth, screenHeight);
         setVisible(true);
     }
     
     public void drawsNodes(Node cashierNode) {
-        //this.nodeLabels = new HasMap<String, JLabel>();
-        JLabel nodeLabel;
-        JLabel nodeConection;
+        JLabel nodeLabel, nodeConection;
         content.removeAll();
         //content.revalidate();
         content.repaint();
         this.nodeLabels = new HashMap<>();
-        //JPanel nodePanel = new JPanel();
-        //content.add(nodePanel);
-        
-        content.add(lblCashier);                            //Label para el cajero y sus propiedades respectivas
-        lblCashier.setBounds(50, 350, 50, 35);
-        lblCashier.setFont(font);
         
         content.add(lblClientCounter);                      //Label provisional que muestra la cantidad de clientes que ingresan
         lblClientCounter.setBounds(800, 10, 150, 35);
         lblClientCounter.setFont(font2);
         
         int init = 62;
-        int init2 = 62;
-        int nodeWidth = 100;
+        int nodeWidth = 120;
         int nodeHeight = 50;
         
-        int i = 0;
         Node _node = cashierNode;
         do {
-            //System.out.println("Pintó (?)");
-            nodeLabel = new JLabel();
+            nodeLabel = new JLabel("<html>"+_node.getName()+
+                    "<br>Recibos: "+_node.getReceipts()+"</html>", SwingConstants.CENTER);
             nodeLabel.setName(_node.getType());
             content.add(nodeLabel);
             nodeLabel.setBounds(init, content.getHeight()/2, nodeWidth, nodeHeight);
-            nodeLabel.setText(_node.getType()+"|Recibos: "+_node.getReceipts());
-            
-            nodeConection = new JLabel();
-            content.add(nodeConection);
             if (_node.getNext() != cashierNode) {
+                nodeConection = new JLabel();
+                content.add(nodeConection);
                 nodeConection.setText("<-");
                 nodeConection.setFont(font2);
-                nodeConection.setBounds((init+100), content.getHeight()/2+13, 40, 20);
+                nodeConection.setBounds((init+nodeWidth), content.getHeight()/2+13, 40, 20);
             }
                              
             nodeLabel.setBorder(BorderFactory.createLineBorder(Color.black));
             this.nodeLabels.put(_node.getType(), nodeLabel);
-            
-                    
+               
             init += nodeWidth+40;
             
-            i++;
-            System.out.println("_node: "+_node.getType()+"re: "+_node.getReceipts());
             _node = _node.getNext();
-            //System.out.println("_node = next(): "+_node.getType());
         } while(_node != cashierNode);
     }
-//    
-//    
-//    private void init() {
-//        btnStart.addActionListener(new java.awt.event.ActionListener() {      //Metodo implementado provisional para el actionperformed 
-//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                btnStartActionPerformed(evt);
-//            }
-//        });
-//    }
-    
-//    
-//    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {
-//        Queue q = new Queue();
-//        
-//    }
-//    
     
     private void drawHeader() {
         add(header);                                //Panel para el encabezado y sus propiedades respectivas
