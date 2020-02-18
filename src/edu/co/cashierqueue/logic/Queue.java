@@ -82,12 +82,11 @@ public class Queue {
                 try {
 
                     while (cashierNode.getNext() != cashierNode) {
-                        
+                        printAllStructure();
                         currentCustomer = cashierNode.getNext();
                         customerRecetips = currentCustomer.getReceipts();
                         
-                        v.nodeLabels.get(currentCustomer.getType()).setBorder(BorderFactory.createLineBorder(Color.red));
-                        this.sleep(1000);
+                        this.sleep(2000);
                         
                         currentCustomer.setReceipts(customerRecetips - cashierReceipts);
                         cashierNode.setNext(currentCustomer.getNext());
@@ -101,24 +100,12 @@ public class Queue {
                                 "<html>"+currentCustomer.getName()+"<br>"+
                                 "Recibos: "+currentCustomer.getReceipts()+"</html>"
                             );
-                            v.nodeLabels.get(currentCustomer.getType()).setBorder(BorderFactory.createLineBorder(Color.black));
-                        } else {
-                            cashierNode.setNext(currentCustomer.getNext());
-                            v.drawsNodes(cashierNode);
-                            v.nodeLabels.get(currentCustomer.getType()).setText(
-                                "<html>"+currentCustomer.getName()+"<br>"+
-                                "Recibos: 0</html>"
-                            );
-                            v.nodeLabels.get(currentCustomer.getType()).setOpaque(true);
-                            v.nodeLabels.get(currentCustomer.getType()).setBackground(Color.red);
                         }
-                        
+                        v.testDraw(cashierNode);
                     }
                 } catch(Exception e) {
-                } finally {
-                    //this.interrupt();
-                    System.out.println("thread finished");
                 }
+                
                 v.btnStart.setEnabled(true);
             }
         };
@@ -147,10 +134,12 @@ public class Queue {
         while (node.getNext() != this.cashierNode) {
             System.out.print("(Node type: " + node.getType() + 
                     " Node receipts: " + node.getReceipts()+"),");
+//            System.out.print(" Node: "+node.getName());
             node = node.getNext();
             if (node.getNext() == this.cashierNode) {
                 System.out.print("(Node type: " + node.getType() + 
                     " Node receipts: " + node.getReceipts()+"),");
+//                System.out.print(" Node: "+node.getName());
             }
         }
         System.out.println("]");

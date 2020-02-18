@@ -35,6 +35,8 @@ public class Ventana extends JFrame{
     
     public JPanel header = new JPanel();
     public JPanel subHeader = new JPanel();
+    public JPanel buttonsPanel = new JPanel();
+    public JPanel clientsPanel = new JPanel();
     public JPanel footer = new JPanel();
     public JPanel content = new JPanel();
     
@@ -43,8 +45,8 @@ public class Ventana extends JFrame{
     public JLabel lblClient = new JLabel();
     public JLabel lblClientCounter = new JLabel();
     public JLabel lblTitulo = new JLabel("SIMULACION DE CAJERO");
-    public JLabel lblAutorD = new JLabel("DAVID STEVEN SANTOS SANTOS");
-    public JLabel lblAutorJ = new JLabel("JUAN CAMILO SARMIENTO REYES");
+    public JLabel lblAutorD = new JLabel("<html>DAVID STEVEN SANTOS SANTOS<br>"+
+            "JUAN CAMILO SARMIENTO REYES</html>");
     
     public HashMap<String, JLabel> nodeLabels;
     
@@ -61,14 +63,10 @@ public class Ventana extends JFrame{
         
         drawHeader();
         drawSubHeader();
-        
-        add(lblClient);
-        lblClient.setBounds(150, 350, 350, 35);
-        lblClient.setFont(font);
-        
+        drawButtons();
         
         add(content);                               //Panel para el conenido y sus propiedades respectivas
-        content.setBounds(0, 200, screenWidth, 400);
+        content.setBounds(0, 250, screenWidth, 400);
         content.setBackground(c2);
         
         content.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -77,27 +75,15 @@ public class Ventana extends JFrame{
         
         content.setLayout(null);
         
-        subHeader.add(btnStart);                              //Boton para dar inicio a la ejecucion y sus propiedades respectivas
-        btnStart.setBounds((screenWidth/2)-(150/2), 10, 150, 45);
-        btnStart.setBackground(c4);
-        btnStart.setForeground(c3);
-        btnStart.setFont(font2);
-        btnStart.setText("INICIAR");
-        
-        setSize(screenWidth, screenHeight);
-        setVisible(true);
+        super.setSize(screenWidth, screenHeight);
+        super.setVisible(true);
     }
     
-    public void drawsNodes(Node cashierNode) {
+    public void testDraw(Node cashierNode) {
+        
         JLabel nodeLabel, nodeConection;
         content.removeAll();
-        //content.revalidate();
         content.repaint();
-        this.nodeLabels = new HashMap<>();
-        
-        content.add(lblClientCounter);                      //Label provisional que muestra la cantidad de clientes que ingresan
-        lblClientCounter.setBounds(800, 10, 150, 35);
-        lblClientCounter.setFont(font2);
         
         int init = 62;
         int nodeWidth = 120;
@@ -108,8 +94,10 @@ public class Ventana extends JFrame{
             nodeLabel = new JLabel("<html>"+_node.getName()+
                     "<br>Recibos: "+_node.getReceipts()+"</html>", SwingConstants.CENTER);
             nodeLabel.setName(_node.getType());
+            paintNode(_node.getType(), nodeLabel);
             content.add(nodeLabel);
             nodeLabel.setBounds(init, content.getHeight()/2, nodeWidth, nodeHeight);
+            
             if (_node.getNext() != cashierNode) {
                 nodeConection = new JLabel();
                 content.add(nodeConection);
@@ -119,7 +107,71 @@ public class Ventana extends JFrame{
             }
                              
             nodeLabel.setBorder(BorderFactory.createLineBorder(Color.black));
-            this.nodeLabels.put(_node.getType(), nodeLabel);
+               
+            init += nodeWidth+40;
+            
+            _node = _node.getNext();
+        } while(_node != cashierNode);
+    }
+    
+    private void paintNode(String type, JLabel nodeLabel) {
+        nodeLabel.setOpaque(true);
+        switch(type) {
+                case "C":
+                    nodeLabel.setBackground(Color.WHITE);
+                    break;
+                case "c1":
+                    nodeLabel.setBackground(Color.yellow);
+                break;
+                case "c2":
+                    nodeLabel.setBackground(Color.PINK);
+                break;
+                case "c3":
+                    nodeLabel.setBackground(Color.cyan);
+                break;
+                case "c4":
+                    nodeLabel.setBackground(Color.magenta);
+                break;
+                default:
+                    nodeLabel.setBackground(Color.orange);
+                break;
+            }
+    }
+    
+    public void drawsNodes(Node cashierNode) {
+        JLabel nodeLabel, nodeConection;
+        content.removeAll();
+        content.repaint();
+        nodeLabels = new HashMap<>();
+        
+        
+        int init = 62;
+        int nodeWidth = 120;
+        int nodeHeight = 50;
+        
+        Node _node = cashierNode;
+        do {
+            nodeLabel = new JLabel("<html>"+_node.getName()+
+                    "<br>Recibos: "+_node.getReceipts()+"</html>", SwingConstants.CENTER);
+            nodeLabel.setName(_node.getType());
+            
+            paintNode(_node.getType(), nodeLabel);
+            
+            content.add(nodeLabel);
+            nodeLabel.setBounds(init, content.getHeight()/2, nodeWidth, nodeHeight);
+            
+            
+            
+            if (_node.getNext() != cashierNode) {
+                nodeConection = new JLabel();
+                content.add(nodeConection);
+                nodeConection.setText("<-");
+                nodeConection.setFont(font2);
+                nodeConection.setBounds((init+nodeWidth), content.getHeight()/2+13, 40, 20);
+            }
+                             
+            nodeLabel.setBorder(BorderFactory.createLineBorder(Color.black));
+            nodeLabels.put(_node.getType(), nodeLabel);
                
             init += nodeWidth+40;
             
@@ -129,27 +181,43 @@ public class Ventana extends JFrame{
     
     private void drawHeader() {
         add(header);                                //Panel para el encabezado y sus propiedades respectivas
-        header.setBounds(0, 0, screenWidth, 150);
+        header.setBounds(0, 0, screenWidth, 100);
         header.setBackground(c1);
         
         header.add(lblTitulo);                             //Label del titulo y sus propiedades respectivas
-        lblTitulo.setBounds(420, 50, 1000, 50);
+        lblTitulo.setBounds(420, 50, 1000, 100);
         lblTitulo.setFont(font);
     }
     
     private void drawSubHeader() {
         add(subHeader);                                //Panel para el encabezado y sus propiedades respectivas
-        subHeader.setBounds(0, 150, screenWidth, 50);
+        subHeader.setBounds(0, 100, screenWidth, 50);
         subHeader.setBackground(c1);
         
         subHeader.add(lblAutorD);                             //Label para autor y sus propiedades respectivas
         lblAutorD.setBounds(970, 5, 300, 30);
         lblAutorD.setFont(font2);
         lblAutorD.setForeground(c3);
+    }
+    
+    private void drawButtons() {
+        add(buttonsPanel);
+        buttonsPanel.setBounds(0, 150, screenWidth, 50);
+        buttonsPanel.setBackground(c1);
         
-        subHeader.add(lblAutorJ);                             //Label para autor y sus propiedades respectivas
-        lblAutorJ.setBounds(970, 28, 300, 30);
-        lblAutorJ.setFont(font2);
-        lblAutorJ.setForeground(c3);
+        add(clientsPanel);
+        clientsPanel.setBounds(0, 200, screenWidth, 50);
+        clientsPanel.setBackground(c1);
+        
+        buttonsPanel.add(btnStart);                              //Boton para dar inicio a la ejecucion y sus propiedades respectivas
+        btnStart.setBounds(0, 0, 150, 45);
+        btnStart.setBackground(c4);
+        btnStart.setForeground(c3);
+        btnStart.setFont(font2);
+        btnStart.setText("INICIAR");
+        
+        clientsPanel.add(lblClientCounter);                      //Label provisional que muestra la cantidad de clientes que ingresan
+        lblClientCounter.setBounds(1000, 10, 150, 35);
+        lblClientCounter.setFont(font2);
     }
 }
